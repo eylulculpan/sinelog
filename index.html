@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B0E14">
+  <meta name="description" content="SineLog'da sevdiğin filmleri öner, ruh haline göre yeni hikâyeler keşfet.">
+  <title>SineLog — Kişisel Film Öneri ve Küratör Paneli</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="SineLog ana sayfa">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M5 8.5 24 4l3 5.5-19 4L5 8.5Z" fill="currentColor"/><path d="m8 16 19-4v12.5a2 2 0 0 1-1.6 2l-15.8 3.2A2 2 0 0 1 7 27.8V16h1Z" fill="currentColor" opacity=".72"/><path d="m8 13.5 3 3m4-4.1 3 3m4-4 3 3" stroke="#0B0E14" stroke-width="1.8"/></svg>
+      </span>
+      <span>Sine<span class="brand-light">Log</span></span>
+    </a>
+    <nav class="nav-links" aria-label="Ana menü">
+      <a class="nav-current" href="#kesfet">Keşfet &amp; Öner</a>
+      <button class="nav-random" id="randomOpen" type="button"><span aria-hidden="true">✦</span> Ne İzlesem? <span aria-hidden="true">🎲</span></button>
+    </nav>
+    <button class="admin-open" id="adminOpen" type="button">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4" y="8.5" width="12" height="9" rx="2"/><path d="M6.5 8.5V6a3.5 3.5 0 1 1 7 0v2.5"/></svg>
+      Yönetici Paneli
+    </button>
+  </header>
+
+  <main>
+    <section class="hero" id="kesfet">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> HER FİLM BİRİNE İYİ GELİR</p>
+        <h1>İyi bir film,<br><em>iyi bir tavsiyeyle</em> başlar.</h1>
+        <p class="hero-description">Aklında kalan filmi bırak, bir başkasının akşamına güzel bir hikâye ekle. Burada öneriler yıldızlardan değil, insanlardan gelir.</p>
+        <div class="community-note">
+          <div class="avatar-stack" aria-hidden="true"><span>D</span><span>M</span><span>A</span><span>+</span></div>
+          <span>Film dostlarının küçük, güzel arşivi</span>
+        </div>
+      </div>
+
+      <form class="recommend-form panel" id="recommendForm">
+        <div class="form-heading">
+          <div><p class="eyebrow">SENİN SIRAN</p><h2>Bir film bırak 🎟</h2></div>
+          <span class="form-step">01 <i>/ 01</i></span>
+        </div>
+        <div class="form-grid">
+          <label class="field">
+            <span>Adın veya rumuzun</span>
+            <input id="personName" name="personName" type="text" maxlength="32" placeholder="Sana nasıl seslenelim?" required>
+          </label>
+          <label class="field">
+            <span>Film adı</span>
+            <input id="movieTitle" name="movieTitle" type="text" maxlength="80" placeholder="Örn. Her (2013)" required>
+          </label>
+          <label class="field field-wide">
+            <span>Yapım yılı ve tür</span>
+            <input id="movieMeta" name="movieMeta" type="text" maxlength="60" placeholder="Örn. 2014 • Bilim Kurgu" required>
+          </label>
+          <fieldset class="chip-group field-wide">
+            <legend>Hangi modda izlenir?</legend>
+            <div class="chips" id="moodChips">
+              <button type="button" class="choice-chip" data-value="Beyin Yakan">◈ Beyin Yakan</button>
+              <button type="button" class="choice-chip" data-value="Kafa Dağıtmalık">☼ Kafa Dağıtmalık</button>
+              <button type="button" class="choice-chip" data-value="Ağlatan Dram">♡ Ağlatan Dram</button>
+              <button type="button" class="choice-chip" data-value="Gece Gerilimi">☾ Gece Gerilimi</button>
+              <button type="button" class="choice-chip" data-value="Görsel Şölen">✧ Görsel Şölen</button>
+            </div>
+          </fieldset>
+          <fieldset class="chip-group field-wide">
+            <legend>Kiminle izlenir?</legend>
+            <div class="chips" id="companyChips">
+              <button type="button" class="choice-chip" data-value="Tek Başına">◎ Tek Başına</button>
+              <button type="button" class="choice-chip" data-value="Arkadaşlarla">♧ Arkadaşlarla</button>
+              <button type="button" class="choice-chip" data-value="Sevgiliyle">♡ Sevgiliyle</button>
+              <button type="button" class="choice-chip" data-value="Aileyle">⌂ Aileyle</button>
+            </div>
+          </fieldset>
+          <fieldset class="rating-field field-wide">
+            <legend>Bu filme kaç yıldız verirsin?</legend>
+            <div class="star-picker" id="starPicker" role="radiogroup" aria-label="Film puanı">
+              <button type="button" data-rating="1" aria-label="1 yıldız" role="radio">★</button>
+              <button type="button" data-rating="2" aria-label="2 yıldız" role="radio">★</button>
+              <button type="button" data-rating="3" aria-label="3 yıldız" role="radio">★</button>
+              <button type="button" data-rating="4" aria-label="4 yıldız" role="radio">★</button>
+              <button type="button" data-rating="5" aria-label="5 yıldız" role="radio">★</button>
+              <span class="rating-hint" id="ratingHint">Puanını seç</span>
+            </div>
+          </fieldset>
+          <label class="field field-wide">
+            <span>İzleyecek olana tek cümlelik notun</span>
+            <textarea id="movieNote" name="movieNote" rows="3" maxlength="220" placeholder="Bu filmi neden aklında tuttun?"></textarea>
+          </label>
+        </div>
+        <p class="form-error" id="formError" role="alert"></p>
+        <button class="button button-primary submit-button" type="submit">Önerini paylaş <span aria-hidden="true">↗</span></button>
+        <p class="privacy-note"><span aria-hidden="true">✦</span> Her öneri, bir sonraki güzel akşamın başlangıcı.</p>
+      </form>
+    </section>
+
+    <section class="showcase section-wrap" aria-labelledby="showcaseTitle">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">SİNELOG TOPLULUĞUNDAN</p>
+          <h2 id="showcaseTitle">Akşamına bir film seç.</h2>
+        </div>
+        <span class="live-count"><i></i> <strong id="filmCount">0</strong> öneri yayında</span>
+      </div>
+      <div class="filter-toolbar">
+        <div class="filter-block">
+          <span class="filter-label">Ruh halin</span>
+          <div class="filter-chips" id="moodFilters">
+            <button type="button" class="filter-chip active" data-filter="all">Tümü</button>
+            <button type="button" class="filter-chip" data-filter="Beyin Yakan">◈ Beyin Yakan</button>
+            <button type="button" class="filter-chip" data-filter="Kafa Dağıtmalık">☼ Kafa Dağıtmalık</button>
+            <button type="button" class="filter-chip" data-filter="Ağlatan Dram">♡ Ağlatan Dram</button>
+            <button type="button" class="filter-chip" data-filter="Gece Gerilimi">☾ Gece Gerilimi</button>
+            <button type="button" class="filter-chip" data-filter="Görsel Şölen">✧ Görsel Şölen</button>
+          </div>
+        </div>
+        <div class="secondary-filters">
+          <label class="select-filter"><span class="sr-only">Kiminle izleneceği</span>
+            <select id="companyFilter">
+              <option value="all">Kiminle: Farketmez</option>
+              <option>Tek Başına</option><option>Arkadaşlarla</option><option>Sevgiliyle</option><option>Aileyle</option>
+            </select>
+          </label>
+          <label class="search-box">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.8" cy="8.8" r="5.8"/><path d="m13.2 13.2 4 4"/></svg>
+            <input id="searchInput" type="search" placeholder="Film veya kişi ara..." aria-label="Film veya kişi ara">
+          </label>
+        </div>
+      </div>
+      <div class="movie-grid" id="movieGrid" aria-live="polite"></div>
+      <div class="empty-state" id="emptyState" hidden>
+        <span>⌕</span><h3>Bu aramayla eşleşen bir film yok.</h3><p>Filtreleri değiştirmeyi ya da başka bir kelime aramayı dene.</p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer"><a class="brand footer-brand" href="#"><span class="brand-mark" aria-hidden="true">✦</span><span>Sine<span class="brand-light">Log</span></span></a><span>Bir film tavsiyesi, bir akşamı güzelleştirebilir.</span><span class="footer-year">© SineLog 2026</span></footer>
+
+  <div class="modal-backdrop" id="ticketModal" hidden>
+    <section class="modal ticket-modal" role="dialog" aria-modal="true" aria-labelledby="ticketHeading">
+      <button class="modal-close" type="button" data-close aria-label="Kapat">×</button>
+      <div class="ticket-topline"><span>✦ SINELOG PRESENTS</span><span>DİJİTAL GİRİŞ BİLETİ</span></div>
+      <div class="ticket-title"><p>BU AKŞAMIN FİLMİ</p><h2 id="ticketHeading"></h2><span id="ticketMeta"></span></div>
+      <div class="ticket-details">
+        <div><span>ÖNEREN</span><strong id="ticketPerson"></strong></div>
+        <div><span>İZLEME MODU</span><strong id="ticketMood"></strong></div>
+        <div class="ticket-seat"><span>SALON / KOLTUK</span><strong id="ticketSeat"></strong></div>
+      </div>
+      <div class="ticket-tear">
+        <div class="ticket-serial"><span>BİLET SERİ NO</span><strong id="ticketSerial"></strong><small>GÜZEL BİR SEYİR DİLERİZ</small></div>
+        <div class="qr-code" id="ticketQr" aria-label="Dekoratif QR kod deseni"></div>
+      </div>
+      <button class="button button-primary ticket-done" type="button" data-close>Harika, teşekkürler <span>✓</span></button>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="randomModal" hidden>
+    <section class="modal random-modal" role="dialog" aria-modal="true" aria-labelledby="randomHeading">
+      <button class="modal-close" type="button" data-close aria-label="Kapat">×</button>
+      <p class="eyebrow">KARAR VERMEK BİZDEN</p>
+      <h2 id="randomHeading">Bu Akşamki Önerin</h2>
+      <div id="randomResult"></div>
+      <button class="button button-primary random-again" id="randomAgain" type="button">Başka Öner <span>↻</span></button>
+    </section>
+  </div>
+
+  <div class="modal-backdrop" id="adminModal" hidden>
+    <section class="modal admin-modal" role="dialog" aria-modal="true" aria-labelledby="adminModalHeading">
+      <button class="modal-close" type="button" data-close aria-label="Kapat">×</button>
+      <div class="admin-login" id="adminLogin">
+        <div class="login-icon" aria-hidden="true">⌑</div>
+        <p class="eyebrow">SADECE KÜRATÖRLER</p>
+        <h2 id="adminModalHeading">Yönetici girişi</h2>
+        <p class="login-description">SineLog vitrininin arka tarafına hoş geldin.</p>
+        <form id="loginForm">
+          <label class="field"><span>Yönetici şifresi</span><input id="adminPassword" type="password" placeholder="Şifreni gir" autocomplete="current-password" required></label>
+          <p class="demo-password">Demo Şifre: <strong>sinema2026</strong></p>
+          <p class="form-error" id="loginError" role="alert"></p>
+          <button class="button button-primary" type="submit">Panele giriş yap <span>→</span></button>
+        </form>
+      </div>
+      <div class="admin-dashboard" id="adminDashboard" hidden>
+        <div class="dashboard-heading">
+          <div><p class="eyebrow">SİNELOG BACKSTAGE</p><h2 id="dashboardTitle">Küratör Paneli</h2></div>
+          <button class="button button-quiet" id="adminLogout" type="button">Oturumu kapat</button>
+        </div>
+        <div class="admin-tools">
+          <button class="button button-outline" id="exportCsv" type="button"><span>↓</span> Listeyi İndir (CSV)</button>
+          <button class="button button-danger-quiet" id="resetData" type="button"><span>↻</span> Varsayılanlara Sıfırla</button>
+        </div>
+        <div class="kpi-grid" id="kpiGrid"></div>
+        <section class="admin-panel-section">
+          <div class="admin-section-heading"><div><p class="eyebrow">TOPLULUK NABZI</p><h3>Ruh hali dağılımı</h3></div></div>
+          <div class="mood-chart" id="moodChart"></div>
+        </section>
+        <section class="admin-panel-section">
+          <div class="admin-section-heading table-heading"><div><p class="eyebrow">İÇERİK YÖNETİMİ</p><h3>Öneri listesi</h3></div><span id="adminTableCount"></span></div>
+          <div class="admin-filters">
+            <label class="search-box"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.8" cy="8.8" r="5.8"/><path d="m13.2 13.2 4 4"/></svg><input id="adminSearch" type="search" placeholder="Film veya kişi ara..." aria-label="Yönetim tablosunda ara"></label>
+            <label class="select-filter"><span class="sr-only">Yönetim ruh hali filtresi</span><select id="adminMoodFilter"><option value="all">Tüm ruh halleri</option></select></label>
+          </div>
+          <div class="table-scroll"><table class="admin-table"><thead><tr><th>FİLM / ÖNEREN</th><th>RUH HALİ</th><th>PUAN</th><th>VİTRİN</th><th>YÖNETİM</th></tr></thead><tbody id="adminTableBody"></tbody></table></div>
+        </section>
+      </div>
+    </section>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
